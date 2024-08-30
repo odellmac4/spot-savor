@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_30_185901) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_30_192016) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "reservations", force: :cascade do |t|
+    t.string "name"
+    t.integer "party_count"
+    t.datetime "start_time"
+    t.bigint "table_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["table_id"], name: "index_reservations_on_table_id"
+  end
 
   create_table "tables", force: :cascade do |t|
     t.integer "capacity"
@@ -20,4 +30,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_30_185901) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "reservations", "tables"
 end
