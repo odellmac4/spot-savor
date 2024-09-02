@@ -1,0 +1,16 @@
+
+
+
+<section class='reservations'>
+  <%@reservations.each do |reservation|%>
+    <div class='reservation-item' id="reservation-<%= reservation.id %>">
+      <ul>
+        <%=reservation.name%>
+        <li>Party Count: <%=reservation.party_count%></li>
+        <li>Reservation Date: <%=format_date(reservation.start_time)%></li>
+        <li>Reservation Time: <%=format_time(reservation.start_time)%></li>
+        <li>Table <%=reservation.table.id%></li>
+      </ul>
+    </div>
+  <%end%>
+</section>
