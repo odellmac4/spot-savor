@@ -215,9 +215,20 @@
         "lines": [
           1,
           1,
-          36,
-          22,
-          22,
+          1,
+          1,
+          1,
+          0,
+          0,
+          null,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           1,
           null,
           null
@@ -227,7 +238,7 @@
         "lines": [
           1,
           1,
-          8,
+          2,
           null,
           null
         ]
@@ -252,24 +263,13 @@
           null
         ]
       },
-      "/Users/odellmcfarlandiv/tech_challenges/spot-savor/app/models/reservation.rb": {
+      "/Users/odellmcfarlandiv/tech_challenges/spot-savor/app/models/table.rb": {
         "lines": [
           1,
           1,
-          null,
-          1,
-          1,
-          1,
-          1,
           1,
           null,
           1,
-          null,
-          1,
-          17,
-          2,
-          null,
-          null,
           null
         ]
       },
@@ -289,17 +289,64 @@
           null
         ]
       },
-      "/Users/odellmcfarlandiv/tech_challenges/spot-savor/app/models/table.rb": {
+      "/Users/odellmcfarlandiv/tech_challenges/spot-savor/app/models/reservation.rb": {
         "lines": [
           1,
           1,
           null,
           1,
           1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null
+        ]
+      },
+      "/Users/odellmcfarlandiv/tech_challenges/spot-savor/app/models/validators/reservation_validator.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          0,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          null,
+          null,
+          null,
+          1,
+          0,
+          0,
+          0,
+          0,
+          null,
+          null,
+          null,
+          null,
           null
         ]
       }
     },
-    "timestamp": 1725053512
+    "timestamp": 1725235318
   }
 }
