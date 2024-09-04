@@ -15,5 +15,7 @@ class Reservation < ApplicationRecord
 
   belongs_to :table
 
-  
+  def self.descending
+    self.order(created_at: :desc)
+  end
 end
