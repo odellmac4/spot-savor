@@ -1,0 +1,116 @@
+<section class='reservation-form'>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+
+        <% if @reservation.errors.any? %>
+          <div class="alert alert-danger" role="alert">
+            <ul>
+              <% @reservation.errors.full_messages.each do |message| %>
+                <li><strong><%= message %></strong></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= form_with model: @reservation, data: {turbo: false} do |form| %>
+
+          <div class="form-floating mb-3">
+            <%= form.text_field :name, 
+            class: 'form-control', 
+            required: true, 
+            id: 'reservation-name', 
+            placeholder: 'i.e. John Doe' %>
+            <%= form.label :name, 'Reservation Name', for: 'reservation-name' %>
+          </div>
+          
+          <div class="form-floating mb-3">
+            <%= form.select :party_count, 
+              options_for_select((2..8), @reservation.party_count), 
+              { include_blank: 'Select number of people' }, 
+              { class: 'form-select form-select-md', required: true, id: 'reservation-party' } %>
+            <%= form.label :party_count, 'Party Count' %>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <%= form.select :reservation_year, 
+                  options_for_select(
+                    year_options, 
+                    @reservation.start_time ? @reservation.start_time.year : @reservation
+                  ), 
+                  { include_blank: 'Year' }, 
+                  { class: 'form-select form-select-md', required: true, id: 'reservation-year'} %>
+                <%= form.label :reservation_time, 'Reservation Year' %>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <%= form.select :reservation_month,
+                  options_for_select(
+                    month_options, 
+                    @reservation.start_time ? month_name(@reservation.start_time.month) : @reservation
+                  ), 
+                  { include_blank: 'Month' }, 
+                  { class: 'form-select form-select-md', required: true, id: 'reservation-month' } %>
+                <%= form.label :reservation_month, 'Reservation Month' %>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating mb-3">
+                <%= form.select :reservation_day,
+                  options_for_select(
+                    (1..31), 
+                    @reservation.start_time ? @reservation.start_time.day : @reservation
+                  ), 
+                  { include_blank: 'Day' }, 
+                  { class: 'form-select form-select-md', required: true, id: 'reservation-day' } %>
+                <%= form.label :reservation_day, 'Reservation Day' %>
+              </div>
+            </div>
+          </div>
+          
+          
+          <div class="row ">
+            <div class="col-md-9">
+              <div class="form-floating mb-3">
+                <%= form.select :reservation_time, 
+                  options_for_select(
+                    time_options, 
+                    @reservation.start_time ? hour_minutes(@reservation.start_time) : @reservation
+                  ), 
+                  { include_blank: 'Select reservation time' }, 
+                  { class: 'form-select form-select-md', required: true, id: 'reservation-time'} %>
+                <%= form.label :reservation_time, 'Reservation Time' %>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-floating mb-3">
+                <%= form.select :am_pm,
+                  options_for_select([['AM', 'AM'], ['PM', 'PM']], @am_pm), 
+                  { include_blank: 'AM/PM' }, 
+                  { class: 'form-select form-select-md', required: true, id: 'am-pm' } %>
+                <%= form.label :am_pm, 'AM/PM' %>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-floating mb-3">
+            <%= form.select :table_id, 
+              options_for_select(table_options(@tables), @reservation.table_id), 
+              { include_blank: 'Select a table' }, 
+              { class: 'form-select form-select-md', required: true, id: 'reservation-table' } %>
+            <%= form.label :table_id, 'Reservation Table' %>
+          </div>
+
+          <%= form.submit 'Create Reservation', 
+          id: 'submit-btn', 
+          class: "btn btn-primary", 
+          data: { disable_with: 'Submitting...' }%>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</section>
