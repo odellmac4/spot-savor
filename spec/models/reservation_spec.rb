@@ -14,6 +14,7 @@ RSpec.describe Reservation, type: :model do
   let(:invalid_reservation5) {build(:reservation, start_time: DateTime.new(2030, 8, 24, 20, 30), table_id: table1.id)}
   let(:invalid_reservation6) {build(:reservation, party_count: 6, table_id: table2.id)}
   let(:invalid_reservation7) {build(:reservation, start_time: DateTime.new(2024, 12, 24, 20, 0, 0), table_id: table1.id)}
+  let(:invalid_reservation8) {build(:reservation, start_time: DateTime.new(7654, 87, 67, 10, 0, 0), table_id: table1.id)}
 
   describe 'validations' do
     it {should validate_presence_of(:name)}
