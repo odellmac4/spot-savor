@@ -11,11 +11,11 @@ include FactoryBot::Syntax::Methods
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 table1 = create(:table, capacity: 8)
-table2 = create(:table, capacity: 4)
+tables = create_list(:table, 9)
 res1 =  create(:reservation, table_id: table1.id)
 res2 =  create(:reservation, table_id: table1.id)
 res3 =  create(:reservation, table_id: table1.id)
-res4 =  create(:reservation, start_time: DateTime.new(2024, 12, 24, 20, 0, 0), table_id: table1.id)
+res4 =  create(:reservation, start_time: DateTime.new(2024, 12, 24, 10, 0, 0), table_id: table1.id)
 res5 =  create(:reservation, start_time: DateTime.new(2024, 12, 24, 20, 0, 0), table_id: table1.id)
 
 
