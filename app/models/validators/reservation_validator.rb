@@ -20,8 +20,8 @@ module Validators
   
     def table_availability
       if table.present? #Ensure reservations method is available to use
-        existing_reservations = table.reservations.where(start_time: start_time).count
-        if existing_reservations > 0
+        existing_reservations = table.reservations.where(start_time: start_time)
+        if existing_reservations.count > 0 && !existing_reservations.include?(self)
           errors.add(:start_time, 'has already been reserved')
         end
       end
