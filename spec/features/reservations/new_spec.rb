@@ -166,5 +166,32 @@ RSpec.describe 'Create reservation' do
         expect(page).to have_content "Slayana"
       end
     end
+
+    it 'maintains user input if reservation is not created' do
+      visit new_reservation_path
+      
+      within ".reservation-form" do
+        fill_in "reservation-name", with: "Slayana"
+        select "7", from: "reservation-party"
+        select "2025", from: "reservation-year"
+        select "January", from: "reservation-month"
+        select "12", from: "reservation-day"
+        select "07:00", from: "reservation-time"
+        select "PM", from: "am-pm"
+        select "Table #{table_4.id} - Capacity: 3", from: "reservation-table"
+  
+        click_button("Create Reservation")
+
+        expect(page).to have_content "Party count is too big for the table capacity"
+
+        expect(page).to have_field("reservation-name", with: "Slayana")
+        expect(page).to have_select("reservation-party", selected: "7")
+        expect(page).to have_select("reservation-month", selected: "January")
+        expect(page).to have_select("reservation-day", selected: "12")
+        expect(page).to have_select("reservation-time", selected: "07:00")
+        expect(page).to have_select("am-pm", selected: "PM")
+        expect(page).to have_select("reservation-table", selected: "Table #{table_4.id} - Capacity: 3")
+      end
+    end
   end
 end
