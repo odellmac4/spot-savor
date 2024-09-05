@@ -11,13 +11,28 @@ class ReservationsController < ApplicationController
   
   def create
     @tables = Table.all
-    @am_pm = datetime_params[:am_pm]
     @reservation = Reservation.new(reservation_params.merge(start_time: reservation_datetime))
 
     if @reservation.save
       redirect_to reservations_path, notice: "Reservation was successfully created."
     else
       render :new
+    end
+  end
+
+  def edit
+    @reservation = Reservation.find(params[:id])
+    @tables = Table.all
+  end
+
+  def update
+    @reservation = Reservation.find(params[:id])
+    @tables = Table.all
+
+    if @reservation.update(reservation_params.merge(start_time: reservation_datetime))
+      redirect_to reservations_path, notice: "#{@reservation.name}'s reservation was updated successfully"
+    else
+      render :edit
     end
   end
 

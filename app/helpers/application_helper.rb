@@ -49,5 +49,24 @@ module ApplicationHelper
     time.strftime('%I:%M')
   end
 
+  def am_pm(reservation)
+    reservation.start_time ? reservation.start_time.strftime("%p") : nil
+  end
+
+  def prefill_year(reservation)
+    reservation.start_time ? reservation.start_time.year : nil
+  end
+
+  def prefill_month(reservation)
+    reservation.start_time ? month_name(reservation.start_time.month) : nil
+  end
+
+  def prefill_day(reservation)
+    reservation.start_time ? reservation.start_time.day : nil
+  end
+
+  def prefill_time(reservation)
+    reservation.start_time ? hour_minutes(reservation.start_time) : nil
+  end
 
 end
