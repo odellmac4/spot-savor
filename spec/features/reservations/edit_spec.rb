@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Reservation update' do
   describe 'form to edit an existing reservation' do
-    let(:table_1) {create(:table, capacity: 8)}
-    let(:table_2) {create(:table, capacity: 6)}
+    let!(:table_1) {create(:table, capacity: 8)}
+    let!(:table_2) {create(:table, capacity: 6)}
 
     let(:reservation_1) {create(:reservation, name: "Reyonce", start_time: DateTime.new(2024, 12, 24, 10, 0, 0), party_count: 7, table_id: table_1.id)}
     let(:reservation_2) {create(:reservation, name: "Riot Johnson", start_time: DateTime.new(2024, 11, 10, 19, 0, 0), party_count: 5, table_id: table_2.id)}
@@ -23,16 +23,53 @@ RSpec.describe 'Reservation update' do
       end
     end
 
+    it 'successfully updates a reservation' do
+      visit edit_reservation_path(reservation_2.id)
+
+      within ".edit-reservation-form" do
+        fill_in "reservation-name", with: "Happy"
+        select "6", from: "reservation-party"
+        select "2025", from: "reservation-year"
+        select "January", from: "reservation-month"
+        select "12", from: "reservation-day"
+        select "08:00", from: "reservation-time"
+        select "PM", from: "am-pm"
+        select "Table #{table_1.id} - Capacity: 8", from: "reservation-table"
+
+        click_button("Update Reservation")
+      end
+
+      visit reservations_path
+
+      within "#reservation-#{reservation_2.id}" do
+        expect(page).to have_content("Party Count: 6")
+        expect(page).to have_content("Reservation Date: Sun, Jan 12 2025")
+        expect(page).to have_content("Reservation Time: 08:00 PM")
+        expect(page).to have_content("Table #{table_1.id}")
+        expect(page).to have_content("Happy")
+
+        expect(page).to_not have_content("Party Count: 5")
+        expect(page).to_not have_content("Reservation Date: Sun, Nov 10 2024")
+        expect(page).to_not have_content("Reservation Time: 07:00 PM")
+        expect(page).to_not have_content("Table #{table_2.id}")
+        expect(page).to_not have_content("Reyonce")
+      end
+    end
+
     it 'throws an error when trying to update reservation table where capacity is smaller than party count' do
       visit edit_reservation_path(reservation_2.id)
 
       within ".edit-reservation-form" do
-
         select "7", from: "reservation-party"
-  
         click_button("Update Reservation")
-
         expect(page).to have_content "Party count is too big for the table capacity"
+      end
+
+      visit reservations_path
+
+      within "#reservation-#{reservation_2.id}" do
+        expect(page).to have_content("Party Count: 5")
+        expect(page).to_not have_content("Party Count: 7")
       end
     end
 
@@ -40,12 +77,16 @@ RSpec.describe 'Reservation update' do
       visit edit_reservation_path(reservation_1.id)
 
       within ".edit-reservation-form" do
-
         select "July", from: "reservation-month"
-  
         click_button("Update Reservation")
-
         expect(page).to have_content "Start time must be at least an hour after the current time"
+      end
+
+      visit reservations_path
+
+      within "#reservation-#{reservation_1.id}" do
+        expect(page).to have_content("Reservation Date: Tue, Dec 24 2024")
+        expect(page).to_not have_content("Reservation Date: Wed, Jul 10 2024")
       end
     end
 
@@ -55,7 +96,6 @@ RSpec.describe 'Reservation update' do
       visit edit_reservation_path(reservation_1.id)
 
       within ".edit-reservation-form" do
-
         select "6", from: "reservation-party"
         select "2024", from: "reservation-year"
         select "October", from: "reservation-month"
@@ -67,6 +107,21 @@ RSpec.describe 'Reservation update' do
         click_button("Update Reservation")
 
         expect(page).to have_content "Start time has already been reserved"
+      end
+
+      visit reservations_path
+
+      within "#reservation-#{reservation_1.id}" do
+        expect(page).to have_content('Reyonce')
+        expect(page).to have_content("Party Count: 7")
+        expect(page).to have_content("Reservation Date: Tue, Dec 24 2024")
+        expect(page).to have_content("Reservation Time: 10:00 AM")
+        expect(page).to have_content("Table #{table_1.id}")
+
+        expect(page).to_not have_content("Party Count: 6")
+        expect(page).to_not have_content("Reservation Date: Thu, Oct 10 2024")
+        expect(page).to_not have_content("Reservation Time: 07:00 PM")
+        expect(page).to_not have_content("Table #{table_2.id}")
       end
     end
   end
