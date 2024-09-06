@@ -9,5 +9,5 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :dashboard, only: :index
-  resources :reservations, only: [:index, :new, :create]
+  resources :reservations, only: [:index, :new, :create, :edit, :update, :destroy]
 end
