@@ -118,4 +118,19 @@ RSpec.describe Reservation, type: :model do
       expect(Reservation.weekend_watchout).to eq 50.0
     end
   end
+
+  describe '#self.reservation_rush' do
+    it 'returns top 2 most popular times of reservation bookings' do
+      resy_1 = create(:reservation, start_time: Time.zone.local(2028, 12, 9, 11, 0, 0), table_id: table1.id)
+      resy_2 = create(:reservation, start_time: Time.zone.local(2028, 12, 10, 11, 0, 0), table_id: table1.id)
+      resy_3 = create(:reservation, start_time: Time.zone.local(2028, 12, 11, 11, 0, 0), table_id: table1.id)
+      resy_4 = create(:reservation, start_time: Time.zone.local(2028, 11, 11, 9, 0, 0), table_id: table1.id)
+      resy_5 = create(:reservation, start_time: Time.zone.local(2028, 11, 12, 9, 0, 0), table_id: table1.id)
+      resy_6 = create(:reservation, start_time: Time.zone.local(2028, 10 , 18, 12, 0, 0), table_id: table1.id)
+      resy_7 = create(:reservation, start_time: Time.zone.local(2028, 10 , 17, 18, 0, 0), table_id: table1.id)
+      resy_8 = create(:reservation, start_time: Time.zone.local(2028, 10 , 16, 5, 0, 0), table_id: table1.id)
+
+      expect(Reservation.reservation_rush).to eq ["11:00 AM", "09:00 AM"]
+    end
+  end
 end

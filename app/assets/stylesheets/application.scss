@@ -16,6 +16,23 @@
  @import "bootstrap";
  @import url('https://fonts.googleapis.com/css2?family=Playwrite+CU:wght@100..400&display=swap');
 
- .spot-savor-title {
-  font-family: 'Playwrite CU', sans-serif;
-}
+  .spot-savor-title {
+    font-family: 'Playwrite CU', sans-serif;
+  }
+
+  .inline-header {
+    display: inline;
+  }
+
+  .insights-text {
+    font-size: 50px;
+    font-weight: lighter;
+  }
+
+  .material-icons.insights-icon {
+    font-size: 70px; /* Adjust the size as needed */
+    margin-left: 5px;
+  }
+
+
+

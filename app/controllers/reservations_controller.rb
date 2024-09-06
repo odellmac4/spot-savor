@@ -71,10 +71,13 @@ class ReservationsController < ApplicationController
   end
 
   def reservation_datetime
-    date = "#{datetime_params[:reservation_month]} #{datetime_params[:reservation_day]} #{datetime_params[:reservation_year]}"
+    date = "#{datetime_params[:reservation_month]} #{datetime_params[:reservation_day]}, #{datetime_params[:reservation_year]}"
     time = "#{datetime_params[:reservation_time]} #{datetime_params[:am_pm]}"
-    reservation_datetime = "#{date} #{time}"
-    DateTime.strptime(reservation_datetime, '%B %d %Y %I:%M %p')
+    reservation_date_time = "#{date} #{time}"
+  
+    Rails.logger.debug "Datetime String: #{reservation_date_time}"
+  
+    Time.zone.strptime(reservation_date_time, '%B %d, %Y %I:%M %p')
   end
   
 end

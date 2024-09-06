@@ -4,22 +4,24 @@ RSpec.describe 'Reservation update' do
   let!(:table_1) {create(:table, capacity: 8)}
   let!(:table_2) {create(:table, capacity: 6)}
 
-  let(:reservation_1) {create(:reservation, name: "Reyonce", start_time: DateTime.new(2024, 12, 24, 10, 0, 0), party_count: 7, table_id: table_1.id)}
-  let(:reservation_2) {create(:reservation, name: "Riot Johnson", start_time: DateTime.new(2024, 11, 10, 19, 0, 0), party_count: 5, table_id: table_2.id)}
+  let(:reservation_1) {create(:reservation, name: "Reyonce", start_time: Time.zone.local(2024, 12, 24, 10, 0, 0), party_count: 7, table_id: table_1.id)}
+  let(:reservation_2) {create(:reservation, name: "Riot Johnson", start_time: Time.zone.local(2024, 11, 10, 19, 0, 0), party_count: 5, table_id: table_2.id)}
 
   describe 'form to edit an existing reservation' do
     it 'form fields are pre-filled with reservation data' do
       visit edit_reservation_path(reservation_1.id)
 
-      within ".edit-reservation-form" do
-        expect(page).to have_field("reservation-name", with: "Reyonce")
-        expect(page).to have_select("reservation-party", selected: "7")
-        expect(page).to have_select("reservation-month", selected: "December")
-        expect(page).to have_select("reservation-day", selected: "24")
-        expect(page).to have_select("reservation-time", selected: "10:00")
-        expect(page).to have_select("am-pm", selected: "AM")
-        expect(page).to have_select("reservation-table", selected: "Table #{table_1.id} - Capacity: 8")
-        expect(page).to have_button("Update Reservation")
+      
+        within ".edit-reservation-form" do
+          expect(page).to have_field("reservation-name", with: "Reyonce")
+          expect(page).to have_select("reservation-party", selected: "7")
+          expect(page).to have_select("reservation-month", selected: "December")
+          expect(page).to have_select("reservation-day", selected: "24")
+          expect(page).to have_select("reservation-time", selected: "10:00")
+          expect(page).to have_select("am-pm", selected: "AM")
+          expect(page).to have_select("reservation-table", selected: "Table #{table_1.id} - Capacity: 8")
+          expect(page).to have_button("Update Reservation")
+
       end
     end
 
@@ -117,7 +119,7 @@ RSpec.describe 'Reservation update' do
     end
 
     it 'throws an error when trying to update reservation to an existing date for the chosen table' do
-      reservation = create(:reservation, start_time: DateTime.new(2024, 10, 10, 19, 0, 0), party_count: 5, table_id: table_2.id)
+      reservation = create(:reservation, start_time: Time.zone.local(2024, 10, 10, 19, 0, 0), party_count: 5, table_id: table_2.id)
 
       visit edit_reservation_path(reservation_1.id)
 
@@ -216,7 +218,7 @@ RSpec.describe 'Reservation update' do
     end
 
     it 'throws multiple errors if party count too big and start time has already been reserved' do
-      reservation = create(:reservation, start_time: DateTime.new(2025, 10, 10, 19, 0, 0), party_count: 5, table_id: table_2.id)
+      reservation = create(:reservation, start_time: Time.zone.local(2025, 10, 10, 19, 0, 0), party_count: 5, table_id: table_2.id)
 
       visit edit_reservation_path(reservation_1.id)
 
