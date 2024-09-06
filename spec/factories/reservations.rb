@@ -5,9 +5,13 @@ FactoryBot.define do
     start_time do
       random_date = Faker::Date.forward(days: 30)
       random_time = Faker::Time.forward(days: 30)
-      # Create DateTime with minutes set to zero
+
+      start_year = Time.now.year + 1
+      end_year = start_year + 4
+      random_year = rand(start_year..end_year)
+
       DateTime.new(
-        random_date.year,
+        random_year,
         random_date.month,
         random_date.day,
         random_time.hour,
