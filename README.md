@@ -3,6 +3,13 @@
 Welcome to SpotSavor, where tradition meets innovation. Revolutionize how your restaurant handles reservations with our cutting-edge platform designed to streamline your workflow and enhance your guest experience. Say goodbye to paper logs and hello to seamless digital management—create, edit, update, and delete reservations with just a few clicks.
 
 Empower your team with real-time updates and intuitive controls, making hosting and reservation management more efficient than ever. Whether you're booking a table for two or a party of twenty, SpotSavor ensures that every reservation is handled with precision and ease. Elevate your restaurant's operations and delight your guests with effortless reservation management. Embrace the future of dining with SpotSavor, where efficiency meets excellence.
+<p align="center"> [Check out the features!](#features)</p> 
+<p align="center">
+<img width="500" alt="Screenshot 2024-09-06 at 3 32 43 PM" src="https://github.com/user-attachments/assets/b4d65b0f-f928-49f5-93c0-d732a6b230dc">
+</p>
+
+### Future Enhancements
+### Challenges
 
 ## Getting Started
 - Ruby (version >= 3.2.2)
@@ -16,7 +23,7 @@ Empower your team with real-time updates and intuitive controls, making hosting 
 Start the server with:
 `rails server`
 
-# Database Schema
+## Database Schema
 ```
 create_table "reservations", force: :cascade do |t|
     t.string "name"
@@ -39,4 +46,4 @@ end
 ```
 
 
-## <p align="center">Features</p>
+# <p align="center">Features</p>
