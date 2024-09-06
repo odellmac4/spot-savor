@@ -20,6 +20,10 @@ class ReservationsController < ApplicationController
     end
   end
 
+  def show
+    @reservation = Reservation.find(params[:id])
+  end
+
   def edit
     @reservation = Reservation.find(params[:id])
     @tables = Table.all
@@ -30,7 +34,8 @@ class ReservationsController < ApplicationController
     @tables = Table.all
 
     if @reservation.update(reservation_params.merge(start_time: reservation_datetime))
-      redirect_to reservations_path, notice: "#{@reservation.name}'s reservation was updated successfully"
+      redirect_to reservation_path(params[:id]),
+      notice: "#{@reservation.name}'s reservation was updated successfully"
     else
       render :edit
     end
@@ -40,7 +45,8 @@ class ReservationsController < ApplicationController
     reservation = Reservation.find(params[:id])
     if reservation
       reservation.destroy
-      redirect_to reservations_path
+      redirect_to reservations_path, 
+      notice: "#{reservation.name}'s reservation was deleted successfully"
     end
   end
 
