@@ -5,6 +5,7 @@ RSpec.describe Reservation, type: :model do
   let!(:table2) {create(:table, capacity: 4)}
   let(:reservation1) {create(:reservation, table_id: table1.id)}
   let!(:reservation2) {create(:reservation, start_time: DateTime.new(2024, 12, 24, 20, 0, 0),table_id: table1.id)}
+  
 
   #Invalid instances
   let(:invalid_reservation1) {build(:reservation, party_count: 9,table_id: table1.id)}
@@ -71,6 +72,27 @@ RSpec.describe Reservation, type: :model do
       expect(Reservation.descending).to_not eq([reservation_3, reservation2, reservation_4])
       expect(Reservation.descending).to_not eq([reservation2, reservation_3, reservation_4])
       expect(Reservation.descending).to_not eq([reservation_4, reservation2, reservation_3])
+    end
+  end
+
+  describe '#self.upcoming_reservations' do
+    next_month = DateTime.now.month + 1
+    
+    let!(:resy_1) {create(:reservation, start_time: DateTime.new(2024, next_month, 1, 11, 0, 0), table_id: table1.id)}
+    let!(:resy_2) {create(:reservation, start_time: DateTime.new(2024, next_month, 2, 13, 0, 0), table_id: table1.id)}
+    let!(:resy_3) {create(:reservation, start_time: DateTime.new(2024, next_month, 3, 15, 0, 0), table_id: table1.id)}
+    let!(:resy_4) {create(:reservation, start_time: DateTime.new(2024, next_month, 4, 9, 0, 0), table_id: table1.id)}
+    let!(:resy_5) {create(:reservation, start_time: DateTime.new(2024, next_month, 5, 7, 0, 0), table_id: table1.id)}
+    let!(:resy_6) {create(:reservation, start_time: DateTime.new(2024, (next_month + 1) , 10, 17, 0, 0), table_id: table1.id)}
+    let!(:resy_7) {create(:reservation, start_time: DateTime.new(2024, (next_month + 2) , 12, 1, 0, 0), table_id: table1.id)}
+    let!(:resy_8) {create(:reservation, start_time: DateTime.new(2024, (next_month + 2) , 14, 6, 0, 0), table_id: table1.id)}
+    
+    it 'returns top five upcoming reservations' do
+      expect(Reservation.upcoming_reservations.count).to eq 5
+      expect(Reservation.upcoming_reservations).to eq [resy_1, resy_2, resy_3, resy_4, resy_5]
+      expect(Reservation.upcoming_reservations).to_not eq [resy_1, resy_2, resy_3, resy_4, resy_5, resy_6]
+      added_resy = create(:reservation, start_time: DateTime.new(2024, next_month, 3, 7, 0, 0), table_id: table1.id)
+      expect(Reservation.upcoming_reservations).to eq [resy_1, resy_2, added_resy, resy_3, resy_4]
     end
   end
 end
