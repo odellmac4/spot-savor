@@ -58,4 +58,19 @@ RSpec.describe Reservation, type: :model do
       expect(invalid_reservation7.errors[:start_time]).to include('has already been reserved')
     end
   end
+
+  describe '#self.descending' do
+    it 'orders reservations in descending order' do
+      expect(Reservation.descending).to eq([reservation2])
+      reservation_3 = create(:reservation, table_id: table1.id)
+      expect(Reservation.descending).to eq([reservation_3, reservation2])
+      reservation_4 = create(:reservation, party_count: 4, table_id: table2.id)
+      expect(Reservation.descending).to eq([reservation_4, reservation_3, reservation2])
+
+      expect(Reservation.descending).to_not eq([reservation_3, reservation_4, reservation2])
+      expect(Reservation.descending).to_not eq([reservation_3, reservation2, reservation_4])
+      expect(Reservation.descending).to_not eq([reservation2, reservation_3, reservation_4])
+      expect(Reservation.descending).to_not eq([reservation_4, reservation2, reservation_3])
+    end
+  end
 end
