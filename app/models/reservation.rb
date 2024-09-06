@@ -18,4 +18,13 @@ class Reservation < ApplicationRecord
   def self.descending
     self.order(created_at: :desc)
   end
+
+  def self.upcoming_reservations
+    self.order(start_time: :asc).limit(5)
+  end
+
+  def self.weekend_watchout
+    weekend_reservations = self.where("EXTRACT(DOW FROM start_time) IN (5, 6, 0)")
+    weekend_reservations_percentage = ((weekend_reservations.count.to_f / self.all.count) * 100).round(2)
+  end
 end
