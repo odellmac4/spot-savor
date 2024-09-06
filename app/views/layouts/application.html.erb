@@ -7,10 +7,66 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="container-fluid">
+      <div class="row flex-nowrap">
+          <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+              <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 sticky-top">
+                  <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                      <span class="fs-5 d-none d-sm-inline spot-savor-title">SpotSavor</span>
+                  </a>
+                  <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                      <li class="nav-item mb-3">
+                          <a href="/" class="nav-link align-middle px-0">
+                              <span class="material-icons fs-4 align-middle">home</span><span class="fs-5 ms-1 d-none d-sm-inline align-middle">Home</span>
+                          </a>
+                      </li>
+                      
+                      <li class="nav-item mb-3">
+                          <a href="#" class="nav-link d-flex align-items-center px-0">
+                              <span class="material-icons fs-4 me-1">dashboard_customize</span><span class="fs-5 d-none d-sm-inline">Dashboard</span>
+                          </a>
+                      </li>
+                      <li>
+                          <a href="#submenu2" data-bs-toggle="collapse" class="nav-link align-middle px-0 ">
+                              <span class="material-icons fs-4 align-middle">menu_book</span> <span class="fs-5 d-none d-sm-inline align-middle">Reservations</span></a>
+                          <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
+                              <li class="w-100">
+                                  <a
+                                    href="/reservations/new" class="nav-link px-0"> 
+                                    <span class="material-icons fs-6 align-middle">add_circle</span> 
+                                    <span class="d-none d-sm-inline align-middle">Create Reservation</span>
+                                  </a>
+                              </li>
+                              <li>
+                                  <a
+                                    href="/reservations" class="nav-link px-0"> 
+                                    <span class="material-icons fs-6 align-middle">list</span>
+                                    <span class="d-none d-sm-inline align-middle">See All Reservations</span>
+                                  </a>
+                              </li>
+                          </ul>
+                      </li>
+                  </ul>
+                  <hr>
+                  <div class="dropdown pb-4">
+                      <a href="#" class="d-flex align-items-center text-white text-decoration-none">
+                        <span class="material-icons fs-4 align-middle">restaurant_menu</span>
+                          <%# <img src="" alt="hugenerd" width="30" height="30" class="rounded-circle"> %> 
+                      </a>
+                  </div>
+              </div>
+          </div>
+          <div class="col py-3">
+            <%= render 'layouts/flash' %>
+            <%= yield %>
+          </div>
+      </div>
+    </div>
   </body>
 </html>

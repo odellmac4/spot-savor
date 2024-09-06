@@ -7,4 +7,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  get "/", to: "application#welcome"
+  resources :dashboard, only: :index
+  resources :reservations
 end

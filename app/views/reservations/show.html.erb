@@ -1,0 +1,33 @@
+<%= render 'shared/spot_savor_title' %>
+
+<div class="container-fluid reservation-show-details">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-6 mt-3">
+      <div class="card shadow-lg my-4 border rounded-3 border-light">
+        <div class="card-header bg-primary text-white border-bottom">
+          <h5 class="card-title mb-0 fs-4"><%=@reservation.name%></h5>
+        </div>
+        <div class="card-body">
+          <h6 class="card-subtitle mb-3 text-muted">Table <%=@reservation.table_id%></h6>
+          <ul class="list-unstyled">
+            <li class="card-text mb-2">
+              <strong>Party Count:</strong> <%=@reservation.party_count%>
+            </li>
+            <li class="card-text mb-2">
+              <strong>Reservation Date:</strong> <%=format_date(@reservation.start_time)%>
+            </li>
+            <li class="card-text">
+              <strong>Reservation Time:</strong> <%=format_time(@reservation.start_time)%>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer text-center bg-light">
+          <div class="d-flex justify-content-center mt-3">
+            <%= link_to 'Edit Reservation', edit_reservation_path(@reservation.id), class: 'btn btn-primary me-2 px-4' %>
+            <%= link_to 'Back to All Reservations', reservations_path, class: 'btn btn-secondary px-4' %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
