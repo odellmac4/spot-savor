@@ -11,7 +11,21 @@ Empower your team with real-time updates and intuitive controls, making hosting 
 <img width="500" alt="Screenshot 2024-09-06 at 3 32 43 PM" src="https://github.com/user-attachments/assets/b4d65b0f-f928-49f5-93c0-d732a6b230dc">
 </p>
 
-### Future Enhancements
+### Future Enhancements 🚀
+### 1. User and Restaurant Management 👥🍽️
+- **User Profiles**: Implement user accounts to enable personalized experiences.
+- **Restaurant Profiles**: Allow restaurants to manage their own profiles with customizable settings.
+
+### 2. Customizable Table Capacity and Scheduling 📅🛋️
+- **Table Management**: Enable restaurants to customize their table capacities.
+- **Start Times and Open Dates**: Provide options for restaurants to set start times and manage open dates.
+
+### 3. Enhanced Analytics 📊📈
+- **Advanced Metrics**: Introduce more comprehensive analytics tools to help restaurants track performance.
+- **Growth Insights**: Provide actionable insights to assist restaurants in growing their business.
+
+I’ve already made a start by implementing a few key metrics in the dashboard, and I'm excited to build upon this foundation to deliver even more value!
+
 ### Challenges
 
 ## Getting Started
