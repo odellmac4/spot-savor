@@ -39,6 +39,7 @@ RSpec.describe 'Reservations index' do
         expect(page).to have_content("Reservation Time: #{reservation.start_time.strftime("%I:%M %p")}")
         expect(page).to have_content("Table #{table.id}")
         expect(page).to have_link(href: edit_reservation_path(reservation.id))
+        expect(page).to have_link("#{reservation.name}", href: reservation_path(reservation.id))
         expect(page).to have_selector(".delete-reservation-link")
       end
 
@@ -49,6 +50,7 @@ RSpec.describe 'Reservations index' do
         expect(page).to have_content("Reservation Time: 10:00 AM")
         expect(page).to have_content("Table #{table.id}")
         expect(page).to have_link(href: edit_reservation_path(resy_6.id))
+        expect(page).to have_link("Odell", href: reservation_path(resy_6.id))
         expect(page).to have_selector(".delete-reservation-link")
       end
     end
@@ -82,6 +84,7 @@ RSpec.describe 'Reservations index' do
         click_button "Delete"
       end
 
+      visit reservations_path
       expect(page).to_not have_content(reservation_2.name)
       expect(page).to have_content(reservation_1.name)
       expect(page).to have_content(reservation_3.name)
