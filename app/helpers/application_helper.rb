@@ -4,11 +4,11 @@ module ApplicationHelper
   end
 
   def format_time(time)
-    time.strftime("%I:%M %p")
+    time.in_time_zone(Time.zone).strftime("%I:%M %p")
   end
 
   def time_options
-    start_time = Time.parse('12:00')
+    start_time = Time.zone.parse('12:00')
     end_time = start_time + 11.hours
 
     options = []
@@ -46,11 +46,11 @@ module ApplicationHelper
   end
 
   def hour_minutes(time)
-    time.strftime('%I:%M')
+    time.in_time_zone(Time.zone).strftime('%I:%M')
   end
 
   def am_pm(reservation)
-    reservation.start_time ? reservation.start_time.strftime("%p") : nil
+    reservation.start_time ? reservation.start_time.in_time_zone(Time.zone).strftime("%p") : nil
   end
 
   def prefill_year(reservation)
@@ -67,6 +67,14 @@ module ApplicationHelper
 
   def prefill_time(reservation)
     reservation.start_time ? hour_minutes(reservation.start_time) : nil
+  end
+
+  def reservation_rush_times(times)
+    if times.length == 2
+      "#{times[0]} and #{times[1]}"
+    else
+      times[0]
+    end
   end
 
 end

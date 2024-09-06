@@ -5,6 +5,7 @@ RSpec.describe Reservation, type: :model do
   let!(:table2) {create(:table, capacity: 4)}
   let(:reservation1) {create(:reservation, table_id: table1.id)}
   let!(:reservation2) {create(:reservation, start_time: DateTime.new(2024, 12, 24, 20, 0, 0),table_id: table1.id)}
+  
 
   #Invalid instances
   let(:invalid_reservation1) {build(:reservation, party_count: 9,table_id: table1.id)}
@@ -71,6 +72,65 @@ RSpec.describe Reservation, type: :model do
       expect(Reservation.descending).to_not eq([reservation_3, reservation2, reservation_4])
       expect(Reservation.descending).to_not eq([reservation2, reservation_3, reservation_4])
       expect(Reservation.descending).to_not eq([reservation_4, reservation2, reservation_3])
+    end
+  end
+
+  describe '#self.upcoming_reservations' do
+    it 'returns top five upcoming reservations' do
+      next_month = DateTime.now.month + 1
+    
+      resy_1 = create(:reservation, start_time: DateTime.new(2024, next_month, 1, 11, 0, 0), table_id: table1.id)
+      resy_2 = create(:reservation, start_time: DateTime.new(2024, next_month, 2, 13, 0, 0), table_id: table1.id)
+      resy_3 = create(:reservation, start_time: DateTime.new(2024, next_month, 3, 15, 0, 0), table_id: table1.id)
+      resy_4 = create(:reservation, start_time: DateTime.new(2024, next_month, 4, 9, 0, 0), table_id: table1.id)
+      resy_5 = create(:reservation, start_time: DateTime.new(2024, next_month, 5, 7, 0, 0), table_id: table1.id)
+      resy_6 = create(:reservation, start_time: DateTime.new(2024, (next_month + 1) , 10, 17, 0, 0), table_id: table1.id)
+      resy_7 = create(:reservation, start_time: DateTime.new(2024, (next_month + 2) , 12, 1, 0, 0), table_id: table1.id)
+      resy_8 = create(:reservation, start_time: DateTime.new(2024, (next_month + 2) , 14, 6, 0, 0), table_id: table1.id)
+      expect(Reservation.upcoming_reservations.count).to eq 5
+      expect(Reservation.upcoming_reservations).to eq [resy_1, resy_2, resy_3, resy_4, resy_5]
+      expect(Reservation.upcoming_reservations).to_not eq [resy_1, resy_2, resy_3, resy_4, resy_5, resy_6]
+      added_resy = create(:reservation, start_time: DateTime.new(2024, next_month, 3, 7, 0, 0), table_id: table1.id)
+      expect(Reservation.upcoming_reservations).to eq [resy_1, resy_2, added_resy, resy_3, resy_4]
+    end
+  end
+
+  describe '#self.weekend_watchout' do
+    it 'returns percentage of reservations booked on fri sat and sun' do
+      resy_1 = create(:reservation, start_time: DateTime.new(2028, 12, 9, 11, 0, 0), table_id: table1.id)
+      resy_2 = create(:reservation, start_time: DateTime.new(2028, 12, 9, 13, 0, 0), table_id: table1.id)
+      resy_3 = create(:reservation, start_time: DateTime.new(2028, 12, 9, 15, 0, 0), table_id: table1.id)
+      resy_4 = create(:reservation, start_time: DateTime.new(2028, 11, 11, 9, 0, 0), table_id: table1.id)
+      resy_5 = create(:reservation, start_time: DateTime.new(2028, 11, 11, 7, 0, 0), table_id: table1.id)
+      resy_6 = create(:reservation, start_time: DateTime.new(2028, 10 , 18, 17, 0, 0), table_id: table1.id)
+      resy_7 = create(:reservation, start_time: DateTime.new(2028, 10 , 18, 1, 0, 0), table_id: table1.id)
+      resy_8 = create(:reservation, start_time: DateTime.new(2028, 10 , 17, 6, 0, 0), table_id: table1.id)
+
+      expect(Reservation.weekend_watchout).to be_a Float
+      expect(Reservation.weekend_watchout).to eq 55.56
+
+      resy_9 = create(:reservation, start_time: DateTime.new(2028, 10 , 17, 1, 0, 0), table_id: table1.id)
+      resy_10 = create(:reservation, start_time: DateTime.new(2028, 10 , 17, 2, 0, 0), table_id: table1.id)
+      resy_11 = create(:reservation, start_time: DateTime.new(2028, 8 , 4, 12, 0, 0), table_id: table1.id)
+      resy_12 = create(:reservation, start_time: DateTime.new(2028, 8 , 5, 5, 0, 0), table_id: table1.id)
+      resy_13 = create(:reservation, start_time: DateTime.new(2028, 8 , 1, 6, 0, 0), table_id: table1.id)
+
+      expect(Reservation.weekend_watchout).to eq 50.0
+    end
+  end
+
+  describe '#self.reservation_rush' do
+    it 'returns top 2 most popular times of reservation bookings' do
+      resy_1 = create(:reservation, start_time: Time.zone.local(2028, 12, 9, 11, 0, 0), table_id: table1.id)
+      resy_2 = create(:reservation, start_time: Time.zone.local(2028, 12, 10, 11, 0, 0), table_id: table1.id)
+      resy_3 = create(:reservation, start_time: Time.zone.local(2028, 12, 11, 11, 0, 0), table_id: table1.id)
+      resy_4 = create(:reservation, start_time: Time.zone.local(2028, 11, 11, 9, 0, 0), table_id: table1.id)
+      resy_5 = create(:reservation, start_time: Time.zone.local(2028, 11, 12, 9, 0, 0), table_id: table1.id)
+      resy_6 = create(:reservation, start_time: Time.zone.local(2028, 10 , 18, 12, 0, 0), table_id: table1.id)
+      resy_7 = create(:reservation, start_time: Time.zone.local(2028, 10 , 17, 18, 0, 0), table_id: table1.id)
+      resy_8 = create(:reservation, start_time: Time.zone.local(2028, 10 , 16, 5, 0, 0), table_id: table1.id)
+
+      expect(Reservation.reservation_rush).to eq ["11:00 AM", "09:00 AM"]
     end
   end
 end

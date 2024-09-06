@@ -80,7 +80,7 @@ RSpec.describe 'Create reservation' do
       reservation = Reservation.last
       expect(reservation.name).to eq "Slayana"
       expect(reservation.party_count).to eq 3
-      expect(reservation.start_time).to eq "Sun, 12 Jan 2025 19:00:00.000000000 UTC +00:00"
+      expect(reservation.start_time).to eq "Sun, 12 Jan 2025 19:00:00.000000000 CST -06:00"
 
       visit reservations_path  
       within "#reservation-#{reservation.id}" do

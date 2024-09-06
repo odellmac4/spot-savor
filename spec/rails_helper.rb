@@ -67,6 +67,12 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 end
 
+RSpec.configure do |config|
+  config.before(:suite) do
+    Time.zone = "Central Time (US & Canada)" # e.g., 'Eastern Time (US & Canada)'
+  end
+end
+
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
     with.test_framework :rspec

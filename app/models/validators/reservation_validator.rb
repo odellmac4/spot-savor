@@ -1,7 +1,7 @@
 module Validators
   module ReservationValidator
     def start_time_date
-      if start_time.present? && start_time <= (DateTime.now + 1.hour)
+      if start_time.present? && start_time <= (Time.zone.now + 1.hour)
         errors.add(:start_time, 'must be at least an hour after the current time')
       end
     end
