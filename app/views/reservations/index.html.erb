@@ -1,7 +1,16 @@
-<header ><h1>You have <%=@reservations.count%> reservations!</h1></header>
+<div class="container-fluid mb-3 reservation-total-count">
+  <div class="row">
+    <div class="col-md-8"><h1 class=" fs-3 ms-4">You have <%=@reservations.count%> reservations!</h1></div>
+    <div class="col-md-4"><%= link_to 'Create a Reservation', new_reservation_path, class: 'btn btn-outline-primary mx-5' %></div>
+  </div>
+</div>
+
 
 <section class='reservations'>
   <%@reservations.descending.each do |reservation|%>
+
+    <div class="delete-modal-<%=reservation.id%>"><%= render 'reservations/confirm_delete_modal', reservation: reservation %> </div>
+
     <div class='reservation-item mx-4' id="reservation-<%= reservation.id %>">
       <ul class="list-group ">
         <li class="list-group-item d-flex list-group-item-action justify-content-between align-items-start mb-3">
@@ -22,8 +31,16 @@
               </div>
             </div>
           </div>
-          <a href="#" ><span class="badge rounded-pill text-bg-primary material-icons fs-6">edit</span></a>
-          <a href="#" class="ms-3" ><span class="badge rounded-pill text-bg-primary material-icons fs-6">delete</span></a>
+          <%= link_to  edit_reservation_path(reservation.id), 
+            class: 'edit-reservation-link' do %>
+            <span class="badge rounded-pill text-bg-primary material-icons fs-6">edit</span></a>
+          <% end %>
+          
+          <%= link_to '#', 
+            data: { bs_toggle: 'modal', bs_target: "#confirmDeleteModal_#{reservation.id}" }, 
+            class: 'ms-3 delete-reservation-link' do %>
+            <span class="badge rounded-pill text-bg-primary material-icons fs-6">delete</span>
+          <% end %>
         </li>
       </ul>
     </div>
