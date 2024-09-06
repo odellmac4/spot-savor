@@ -23,7 +23,7 @@ RSpec.describe 'Reservation update' do
       end
     end
 
-    it 'successfully updates a reservation and leads to reservation show page' do
+    it 'successfully updates a reservation and leads to reservation show page with successful alert' do
       visit edit_reservation_path(reservation_2.id)
 
       within ".edit-reservation-form" do
@@ -40,6 +40,8 @@ RSpec.describe 'Reservation update' do
       end
 
       expect(current_path).to eq reservation_path(reservation_2.id)
+      expect(page).to have_content("Happy's reservation was updated successfully")
+      
       visit reservation_path(reservation_2.id)
 
       within ".reservation-show-details" do
