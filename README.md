@@ -91,7 +91,9 @@ end
 
 <details>
   <summary style="font-size: 36 px; font-weight: bold;">Create a Reservation 📅</summary>
-<img width="500" alt="Screenshot 2024-09-06 at 3 35 56 PM" src="https://github.com/user-attachments/assets/ffce80ff-7443-4b99-a7b0-a5f2f4b83243">
+<p align="center">
+  <img width="500" alt="Screenshot 2024-09-06 at 3 35 56 PM" src="https://github.com/user-attachments/assets/ffce80ff-7443-4b99-a7b0-a5f2f4b83243">
+</p>
 
   The "Create a Reservation" feature allows users to book a reservation at any time, 24/7. Below is a detailed overview of how the feature works and the validations in place.
 
@@ -117,18 +119,52 @@ To ensure a valid reservation, all fields in the form are required. If any field
 - **Existing Reservation Check**: The system checks for existing reservations for the specified date and time. Users will be informed if the chosen slot is already booked.
 - **Past Date/Time Validation**: Reservations cannot be made for dates and times that have already passed or for times less than an hour from the current time.
 - **Table Capacity Check**: The system verifies that the party size does not exceed the table's capacity. Users will receive an error if the party size is too large.
-
-<img width="500" alt="Screenshot 2024-09-06 at 3 36 40 PM" src="https://github.com/user-attachments/assets/84135059-4380-4d1d-bd32-fd5768a9627e">
+<p align="center">
+  <img width="500" alt="Screenshot 2024-09-06 at 3 36 40 PM" src="https://github.com/user-attachments/assets/84135059-4380-4d1d-bd32-fd5768a9627e">
+</p>
 
 ### Error Handling
 
 - **Field Validation**: If any required field is not filled out, the form will display a notification indicating that the field is required.
 - **Time and Capacity Errors**: Users will receive specific error messages if their reservation request fails due to existing reservations, past date/times, or exceeding table capacity.
-
-<img width="500" alt="Screenshot 2024-09-06 at 3 37 29 PM" src="https://github.com/user-attachments/assets/3aceb4aa-a52f-4c15-b629-22b1d729d05b">
+<p align="center">
+  <img width="500" alt="Screenshot 2024-09-06 at 3 37 29 PM" src="https://github.com/user-attachments/assets/3aceb4aa-a52f-4c15-b629-22b1d729d05b">
+</p>
 
 </details>
 
 <details>
-  <summary style="font-size: 36 px; font-weight: bold;">List all Reservations 📅</summary>
-<details/>
+<summary> Reservations Index Page 📋</summary>
+  <p align="center">
+    <img width="500" alt="Screenshot 2024-09-06 at 3 35 31 PM" src="https://github.com/user-attachments/assets/f3ed68a5-cf0e-40e8-8471-524195bd90f9">
+  </p>
+
+The Reservations Index Page provides an overview of all reservations and offers various functionalities for managing them. Here’s a detailed description of the page features and interactions:
+
+### Page Layout and Features
+
+1. **Reservations List** 🗒️
+   - **All Reservations Displayed**: The page lists all reservations with their relevant attributes, such as name, date, time, and party size.
+   - **Sorted by Create Date**: Reservations are sorted from the earliest create date to the oldest create date, ensuring a chronological view of reservations.
+
+2. **Reservation Details and Navigation** 🔗
+   - **Reservation Name Link**: Each reservation entry displays the name of the person who made the reservation. This name is a clickable link that directs users to the reservation’s show page, where they can view more detailed information.
+
+3. **Action Icons** ✏️🗑️
+   - **Edit Icon**: On the right side of each reservation, there is an edit icon that allows users to modify the reservation details.
+   - **Delete Icon**: Next to the edit icon is a trash icon. Clicking this icon activates a confirmation modal asking users to confirm the deletion of the reservation.
+
+4. **Delete Confirmation Modal** ⚠️
+   - **Confirmation Prompt**: When the delete icon is clicked, a modal window appears, prompting the user to confirm their intention to delete the reservation. This helps prevent accidental deletions.
+  
+<p align="center">
+  <img width="500" alt="Screenshot 2024-09-06 at 3 37 52 PM" src="https://github.com/user-attachments/assets/7da0cf23-2dd9-4e4d-b3f7-a41d37ca3892">
+</p>
+
+5. **Total Reservations** 📊
+   - **Count Display**: The total number of reservations is displayed at the top or bottom of the page, providing users with an overview of the current reservation volume.
+
+6. **Call-to-Action** ✨
+   - **Create Reservation Button**: A prominent call-to-action button is available on the page, encouraging users to create a new reservation. This button is typically located at the top or bottom of the page for easy access.
+
+</details>
