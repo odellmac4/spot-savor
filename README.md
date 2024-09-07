@@ -20,6 +20,8 @@ Empower your team with real-time updates and intuitive controls, making hosting 
 - **Table Management**: Enable restaurants to customize their table capacities.
 - **Start Times and Open Dates**: Provide options for restaurants to set start times and manage open dates.
 
+  
+
 ### 3. Enhanced Analytics 📊📈
 - **Advanced Metrics**: Introduce more comprehensive analytics tools to help restaurants track performance.
 - **Growth Insights**: Provide actionable insights to assist restaurants in growing their business.
@@ -45,7 +47,6 @@ Throughout the development process, I encountered several challenges. The most s
 Despite these efforts, working with `DateTime` and timezone configuration remains a complex aspect of the application, and further refinements may be needed.
 
 If you have any insights or suggestions on handling these issues, I’d love to hear them!
-
 
 ## Getting Started
 - Ruby (version >= 3.2.2)
@@ -167,4 +168,11 @@ The Reservations Index Page provides an overview of all reservations and offers 
 6. **Call-to-Action** ✨
    - **Create Reservation Button**: A prominent call-to-action button is available on the page, encouraging users to create a new reservation. This button is typically located at the top or bottom of the page for easy access.
 
+</details>
+
+<details>
+  <summary>SpotSavor Insights</summary>
+  <p align="center">
+    <img width="200" alt="Screenshot 2024-09-06 at 5 52 59 PM" src="https://github.com/user-attachments/assets/11038694-4f76-49c3-b326-3f5e5314fc8c">
+  </p>
 </details>
