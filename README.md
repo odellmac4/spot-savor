@@ -55,7 +55,7 @@ If you have any insights or suggestions on handling these issues, I’d love to 
 ### Installation
 1. `git clone`
 2. `bundle install`
-3. `rails db:create` `rails db:seed`
+3. `rails db:{create, migrate, seed}`
 ### Usage
 Start the server with:
 `rails server`
