@@ -103,7 +103,7 @@ end
 - **24/7 Booking**: Users can make reservations at any time, provided that certain conditions are met.
 - **Real-Time Availability Check**: Reservations can be made as long as:
   - There is no existing reservation for the same time slot.
-  - The reservation is not for a past date or less than an hour from the current time.
+  - The reservation start time is in the past.
   - The party size does not exceed the table’s capacity.
 
 ### Form Requirements
@@ -113,12 +113,11 @@ To ensure a valid reservation, all fields in the form are required. If any field
 1. **Name**: The name of the person making the reservation.
 2. **Date and Time**: The desired date and time for the reservation.
 3. **Party Size**: The number of people in the party.
-4. **Contact Information**: Email address or phone number for confirmation.
 
 ### Validation Rules
 
 - **Existing Reservation Check**: The system checks for existing reservations for the specified date and time. Users will be informed if the chosen slot is already booked.
-- **Past Date/Time Validation**: Reservations cannot be made for dates and times that have already passed or for times less than an hour from the current time.
+- **Past Date/Time Validation**: Reservations cannot be made for dates and times that have already passed or for times less than the current time.
 - **Table Capacity Check**: The system verifies that the party size does not exceed the table's capacity. Users will receive an error if the party size is too large.
 <p align="center">
   <img width="500" alt="Screenshot 2024-09-06 at 3 36 40 PM" src="https://github.com/user-attachments/assets/84135059-4380-4d1d-bd32-fd5768a9627e">
@@ -171,8 +170,26 @@ The Reservations Index Page provides an overview of all reservations and offers 
 </details>
 
 <details>
-  <summary>SpotSavor Insights</summary>
+  <summary>SpotSavor Insights (IN PROGRESS)</summary>
+
+  ## SpotSavor Dashboard Insights ✨
   <p align="center">
-    <img width="200" alt="Screenshot 2024-09-06 at 5 52 59 PM" src="https://github.com/user-attachments/assets/11038694-4f76-49c3-b326-3f5e5314fc8c">
+    <img width="500" alt="Screenshot 2024-09-08 at 3 52 24 PM" src="https://github.com/user-attachments/assets/5a4c5053-8197-4b79-b261-4b146e94af26">
   </p>
+
+### 📅 Top 5 Upcoming Reservations
+Easily view the top 5 upcoming reservations! 🎉 The list shows reservations scheduled for the future, helping you stay prepared for incoming guests.
+
+### 📊 Weekend Watchout
+Get insights into weekend reservations! 🗓️ This feature shows the percentage of reservations happening on Fridays, Saturdays, and Sundays, so you can manage weekend traffic better.
+
+### ⏰ Reservation Rush (In Progress)
+Identify the two most popular reservation times! 📈 This feature will help you understand peak dining hours and optimize staffing and resources accordingly.
+
+---
+<p align="center">
+    <img width="200" alt="Screenshot 2024-09-06 at 5 52 59 PM" src="https://github.com/user-attachments/assets/11038694-4f76-49c3-b326-3f5e5314fc8c">
+  
+Stay tuned for more updates and enhancements! 🚀
 </details>
+
