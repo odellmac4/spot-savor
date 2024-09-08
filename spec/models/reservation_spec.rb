@@ -36,9 +36,11 @@ RSpec.describe Reservation, type: :model do
     it {should belong_to(:table)}
     it { should validate_length_of(:name).is_at_most(100) }
     it { should allow_value("Valid Name").for(:name) }
-    it { should allow_value("Mrs. Jordyn Baylark-Rasul").for(:name) }
+    it { should allow_value("Ms. Jordyn Baylark-Rasul").for(:name) }
     it { should allow_value(" Mr. Monopoly").for(:name) }
     it { should_not allow_value("Invalid@Name!").for(:name) }
+    it { should_not allow_value("Odell4").for(:name) }
+    it { should_not allow_value("Odell4&100").for(:name) }
 
     it 'is valid if party count is in required range of 2 to 8' do
       expect(reservation1).to be_a Reservation

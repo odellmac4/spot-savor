@@ -1,95 +1,69 @@
-<div class="text-center mb-5 mt-5">
-  <header>
-    <div>  
-      <h1 class="d-sm-inline align-middle spot-savor-title"><strong>SpotSavor </strong></h1>
-      <h1 class="d-sm-inline align-middle insights-text">Insights</h1>
-      <span class="material-icons insights-icon align-middle">query_stats</span>
-    </div>
-  </header>
-</div>
 
-<div class="text-center mb-2 mt-5 upcoming-reservations-header">
-    <div>  
-      <h2 class="d-sm-inline align-middle fs-5"><strong>Upcoming Reservations</strong></h2>
+<div class="spot-savor-dashboard">
+  <%= render '/shared/secondary_nav', 
+    nav_bar_content: "",
+    resy_index_button: true,
+    create_resy_button: true,
+    nav_bar_content_class: "",
+    nav_bar_insights: true
+  %>
+    
+  <section class="upcoming-reservations">
+    <div class="text-center mb-2 mt-5 upcoming-reservations-header">
+      <div>  
+        <h2 class="d-sm-inline align-middle fs-5"><strong>Upcoming Reservations</strong></h2>
+      </div>
     </div>
-</div>
-
-<section class="upcoming-reservations mb-3">
-  <% @reservations.upcoming_reservations.each do |reservation| %>
-    <div class='reservation-item mx-5' id="reservation-<%= reservation.id %>">
-      <ul class="list-group">
-        <li class="list-group-item d-flex list-group-item-action align-items-center mb-3">
-          <div class="d-flex flex-column align-items-center w-100">
-            <div class="fw-bold fs-6 mb-2">
-              <%= link_to reservation.name, reservation_path(reservation.id), class: 'text-decoration-none text-primary fw-bold' %>
-            </div>
-            <div class="reservation-details row text-center">
-              <div class="col-md-auto mb-1">
-                Party Count: <%= reservation.party_count %>
+    <div class="upcoming-reservations-list mb-3">
+      <% @reservations.upcoming_reservations.each do |reservation| %>
+        <div class='reservation-item mx-5' id="reservation-<%= reservation.id %>">
+          <ul class="list-group">
+            <li class="list-group-item d-flex list-group-item-action align-items-center mb-3">
+              <div class="d-flex flex-column align-items-center w-100">
+                <div class="fw-bold fs-6 mb-2">
+                  <%= link_to reservation.name, reservation_path(reservation.id), class: 'text-decoration-none text-primary fw-bold' %>
+                </div>
+                <div class="reservation-details row text-center">
+                  <div class="col-md-auto mb-1">
+                    Party Count: <%= reservation.party_count %>
+                  </div>
+                  <div class="col-md-auto mb-1">
+                    Reservation Date: <%= format_date(reservation.start_time) %>
+                  </div>
+                  <div class="col-md-auto mb-1">
+                    Reservation Time: <%= format_time(reservation.start_time) %>
+                  </div>
+                  <div class="col-md-auto mb-1">
+                    Table <%= reservation.table.id %>
+                  </div>
+                </div>
               </div>
-              <div class="col-md-auto mb-1">
-                Reservation Date: <%= format_date(reservation.start_time) %>
-              </div>
-              <div class="col-md-auto mb-1">
-                Reservation Time: <%= format_time(reservation.start_time) %>
-              </div>
-              <div class="col-md-auto mb-1">
-                Table <%= reservation.table.id %>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  <% end %>
-  <div class="d-flex justify-content-center">
-      <%= link_to 'See All Reservations', reservations_path, class: 'btn btn-primary me-2 px-4 fs-5' %>
-  </div>
-</section>
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12 col-md-6"> 
-      <div class="card shadow-lg my-4 border rounded-3 border-light">
-        <div class="card-header bg-primary text-white border-bottom">
-          <h5 class="card-title mb-0 fs-4">Weekend Watchout</h5>
-        </div>
-        <div class="card-body">
-          <h6 class="card-text fs-1"><%= @reservations.weekend_watchout %>%</h6>
-          <ul class="list-unstyled">
-            <li class="card-text">
-              <strong>of your reservations are on Friday, Saturday, or Sunday</strong>
             </li>
           </ul>
         </div>
-        <div class="card-footer text-center bg-light">
-          <div class="d-flex justify-content-center fs-6">
-            Weekends bring in big money! Keep track of your weekend reservations.
-          </div>
-        </div>
-      </div>
+      <% end %>
     </div>
-    <div class="col-12 col-md-6">
-      <div class="card shadow-lg my-4 border rounded-3 border-light">
-        <div class="card-header bg-primary text-white border-bottom">
-          <h5 class="card-title mb-0 fs-4">Reservation Rush</h5>
-        </div>
-        <div class="card-body">
-          <h6 class="card-text fs-1">
-            <%= reservation_rush_times(@reservations.reservation_rush) %>
-          </h6>
-          <ul class="list-unstyled">
-            <li class="card-text">
-              <strong>are the most popular times of day to dine at your restaurant</strong>
-            </li>
-          </ul>
-        </div>
-        <div class="card-footer text-center bg-light">
-          Uncover the Most Popular Times for Dining!
-        </div>
+  </section>
+  <section class="spot-savor-insights">
+    <div class="container-fluid mt-5">
+      <div class="row">
+        
+        <%= render 'insights_card', 
+        method: "#{@reservations.weekend_watchout}%", 
+        insights_title: 'Weekend Watchout',
+        insights_message: 'of your reservations are on Friday, Saturday, or Sunday',
+        insights_description: 'Weekends bring in big money! Keep track of your weekend reservations.' %>
+      
+      
+        <%= render 'insights_card', 
+        method: reservation_rush_times(@reservations.reservation_rush), 
+        insights_title: 'Reservation Rush',
+        insights_message: 'are the most popular times of day to dine at your restaurant',
+        insights_description: 'Uncover the Most Popular Times for Dining!' %>
+        
       </div>
-    </div>
-  </div>
+  </section>
 </div>
+
 
 
