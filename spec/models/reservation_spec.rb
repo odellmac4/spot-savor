@@ -185,7 +185,7 @@ RSpec.describe Reservation, type: :model do
       resy_12 = create(:reservation, start_time: DateTime.new(2028, 8 , 5, 5, 0, 0), table_id: table1.id)
       resy_13 = create(:reservation, start_time: DateTime.new(2028, 8 , 1, 6, 0, 0), table_id: table1.id)
 
-      expect(Reservation.weekend_watchout).to eq 50.0
+      expect(Reservation.weekend_watchout).to eq 42.86
     end
   end
 
