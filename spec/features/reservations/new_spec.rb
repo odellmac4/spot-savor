@@ -6,6 +6,8 @@ RSpec.describe 'Create reservation' do
     let!(:table_2) {create(:table, capacity: 6)}
     let!(:table_3) {create(:table, capacity: 5)}
     let!(:table_4) {create(:table, capacity: 3)}
+    let(:current_time) {Time.zone.now}
+    let(:current_time_top_hour) {Time.zone.local(current_time.year, current_time.month, current_time.day, current_time.hour)}
 
     before do
       visit new_reservation_path
@@ -57,6 +59,7 @@ RSpec.describe 'Create reservation' do
           "Table #{table_4.id} - Capacity: 3"
                 ])
         expect(page).to have_button("Create Reservation")
+        expect(page).to have_link("Cancel", href: reservations_path)
       end
     end
   
@@ -109,7 +112,7 @@ RSpec.describe 'Create reservation' do
       end
     end
 
-    it 'throws an error if start time is not at least an hour out' do
+    it 'throws an error if start time is not in the future' do
       within ".reservation-form" do
         fill_in "reservation-name", with: "Slayana"
         select "7", from: "reservation-party"
@@ -122,7 +125,7 @@ RSpec.describe 'Create reservation' do
   
         click_button("Create Reservation")
 
-        expect(page).to have_content "Start time must be at least an hour after the current time"
+        expect(page).to have_content "Start time must be in the future"
       end
     end
 
@@ -210,7 +213,7 @@ RSpec.describe 'Create reservation' do
       end
     end
 
-    it 'throws multiple errors if start time is not at least an hour out and party count exceeds table capacity' do
+    it 'throws multiple errors if start time is not in the future and party count exceeds table capacity' do
       within ".reservation-form" do
         fill_in "reservation-name", with: "Slayana"
         select "7", from: "reservation-party"
@@ -223,8 +226,32 @@ RSpec.describe 'Create reservation' do
   
         click_button("Create Reservation")
 
-        expect(page).to have_content "Start time must be at least an hour after the current time"
+        expect(page).to have_content "Start time must be in the future"
         expect(page).to have_content "Party count is too big for the table capacity"
+      end
+    end
+
+    it 'throws multiple errors if start time is not in the future and reservation has already been reserved' do
+      start_time = current_time_top_hour + 1.hour
+      reservation = create(:reservation, party_count: 3, start_time: start_time ,table_id: table_3.id)
+      
+      travel_to start_time + 5.hours do
+        within ".reservation-form" do
+          fill_in "reservation-name", with: "Slayana"
+          select "7", from: "reservation-party"
+          select start_time.year, from: "reservation-year"
+          select start_time.strftime("%B"), from: "reservation-month"
+          select start_time.day, from: "reservation-day"
+          select "#{start_time.hour}:00", from: "reservation-time"
+          select start_time.strftime("%p"), from: "am-pm"
+          select "Table #{table_3.id} - Capacity: 5", from: "reservation-table"
+    
+          click_button("Create Reservation")
+  
+          expect(page).to have_content "Start time must be in the future"
+          expect(page).to have_content "Start time has already been reserved"
+          expect(page).to have_content "Party count is too big for the table capacity"
+        end
       end
     end
 
