@@ -20,6 +20,12 @@ RSpec.describe Reservation, type: :model do
   let(:invalid_reservation7) {build(:reservation, start_time: DateTime.new(2024, 12, 24, 20, 0, 0), table_id: table1.id)}
   let(:invalid_reservation8) {build(:reservation, party_count: 5, start_time: current_time_top_hour - 2.hour, table_id: table2.id)}
   let(:invalid_reservation9) {build(:reservation, party_count: 5, start_time: current_time_top_hour + 2.days, table_id: table2.id)}
+  let(:invalid_reservation10) {build(:reservation, name: "#$%$", table_id: table1.id)}
+  let(:invalid_reservation11) {build(:reservation, name: "667754", table_id: table1.id)}
+  name = "Omac"
+  invalid_name_length = name * 100
+  let(:invalid_reservation12) {build(:reservation, name: invalid_name_length, table_id: table2.id)}
+  let(:invalid_reservation13) {build(:reservation, name: "T", table_id: table2.id)}
 
   describe 'validations' do
     it {should validate_presence_of(:name)}
@@ -28,6 +34,11 @@ RSpec.describe Reservation, type: :model do
     it {should validate_presence_of(:table_id)}
     it {should validate_numericality_of(:party_count)}
     it {should belong_to(:table)}
+    it { should validate_length_of(:name).is_at_most(100) }
+    it { should allow_value("Valid Name").for(:name) }
+    it { should allow_value("Mrs. Jordyn Baylark-Rasul").for(:name) }
+    it { should allow_value(" Mr. Monopoly").for(:name) }
+    it { should_not allow_value("Invalid@Name!").for(:name) }
 
     it 'is valid if party count is in required range of 2 to 8' do
       expect(reservation1).to be_a Reservation

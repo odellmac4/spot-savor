@@ -94,6 +94,22 @@ RSpec.describe 'Create reservation' do
         expect(page).to have_content "Table #{table_4.id}"
       end
     end
+
+    it 'validates that name must be more than 3 characters long.' do
+      within ".reservation-form" do
+        fill_in "reservation-name", with: "Sl"
+        select "3", from: "reservation-party"
+        select "2025", from: "reservation-year"
+        select "January", from: "reservation-month"
+        select "12", from: "reservation-day"
+        select "07:00", from: "reservation-time"
+        select "PM", from: "am-pm"
+        select "Table #{table_4.id} - Capacity: 3", from: "reservation-table"
+  
+        click_button("Create Reservation")
+        expect(page).to have_content "is too short (minimum is 3 characters)"
+      end
+    end
   
     it 'throws an error if party count exceeds table capacity' do
       within ".reservation-form" do
@@ -242,7 +258,7 @@ RSpec.describe 'Create reservation' do
           select start_time.year, from: "reservation-year"
           select start_time.strftime("%B"), from: "reservation-month"
           select start_time.day, from: "reservation-day"
-          select "#{start_time.hour}:00", from: "reservation-time"
+          select "#{start_time.strftime("%I")}:00", from: "reservation-time"
           select start_time.strftime("%p"), from: "am-pm"
           select "Table #{table_3.id} - Capacity: 5", from: "reservation-table"
     
