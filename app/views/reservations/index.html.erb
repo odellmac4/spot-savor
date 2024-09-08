@@ -1,12 +1,14 @@
-<div class="container-fluid mb-3 reservation-total-count">
-  <div class="row">
-    <div class="col-md-8"><h1 class=" fs-3 ms-4">You have <%=@reservations.count%> reservations!</h1></div>
-    <div class="col-md-4"><%= link_to 'Create a Reservation', new_reservation_path, class: 'btn btn-outline-primary mx-5' %></div>
-  </div>
-</div>
+<section class="reservations-index-nav">
+  <%= render '/shared/secondary_nav', 
+    nav_bar_content: "You have #{@reservations.count} reservations!",
+    resy_index_button: false,
+    create_resy_button: true,
+    nav_bar_content_class: "fs-3 ms-4",
+    nav_bar_insights: false
+  %>
+</section>
 
-
-<section class='reservations'>
+<section class='reservations mt-2'>
   <%@reservations.descending.each do |reservation|%>
 
     <div class="delete-modal-<%=reservation.id%>"><%= render 'reservations/confirm_delete_modal', reservation: reservation %> </div>

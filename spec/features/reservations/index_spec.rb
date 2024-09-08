@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'Reservations index' do
   
   describe 'list of reservations' do
+    
     let!(:table) {create(:table, capacity: 8)}
     let!(:reservations) {create_list(:reservation, 5, table_id: table.id)}
     let!(:resy_6) {create(:reservation, name: 'Odell', party_count: 7, start_time: Time.zone.local(2024, 12, 24, 10, 0, 0), table_id: table.id)}
@@ -12,20 +13,20 @@ RSpec.describe 'Reservations index' do
     end
 
     it 'displays call to action to create a reservation' do
-      within ".reservation-total-count" do
-        expect(page).to have_link("Create a Reservation", href: new_reservation_path)
+      within ".reservations-index-nav" do
+        expect(page).to have_link("Create Reservation", href: new_reservation_path)
       end
     end
 
     it 'displays total number of reservations' do
-      within ".reservation-total-count" do
+      within ".reservations-index-nav" do
         expect(page).to have_content "You have 6 reservations!"
       end
 
       resy_7 = create(:reservation, party_count: 3, table_id: table.id)
       visit reservations_path
 
-      within ".reservation-total-count" do
+      within ".reservations-index-nav" do
         expect(page).to have_content "You have 7 reservations!"
       end
     end
@@ -69,7 +70,7 @@ RSpec.describe 'Reservations index' do
       visit reservations_path
     end
 
-    it 'has reservation name and buttons to delete or cancel reservation' do
+    it 'has reservation name and buttons to delete reservation or cancel request' do
       within "#confirmDeleteModal_#{reservation_1.id}" do
         expect(page).to have_content("Are you sure you want to delete #{reservation_1.name}'s reservation?")
         expect(page).to have_button("Delete")
@@ -79,6 +80,9 @@ RSpec.describe 'Reservations index' do
 
     it 'has a modal to confirm if user wants to destroy reservation' do
       expect(Reservation.exists?(reservation_2.id)).to be_truthy
+      within ".reservations-index-nav" do
+        expect(page).to have_content "You have 3 reservations!"
+      end
 
       within "#confirmDeleteModal_#{reservation_2.id}" do
         click_button "Delete"
@@ -89,7 +93,7 @@ RSpec.describe 'Reservations index' do
       expect(page).to have_content(reservation_1.name)
       expect(page).to have_content(reservation_3.name)
 
-      within ".reservation-total-count" do
+      within ".reservations-index-nav" do
         expect(page).to have_content "You have 2 reservations!"
       end
 
@@ -97,13 +101,17 @@ RSpec.describe 'Reservations index' do
     end
 
     it 'cancels deletion of reservation and allows reservation to persist' do
+      within ".reservations-index-nav" do
+        expect(page).to have_content "You have 3 reservations!"
+      end
+      
       within "#confirmDeleteModal_#{reservation_3.id}" do
         click_button "Cancel"
       end
 
       expect(page).to have_content(reservation_3.name)
 
-      within ".reservation-total-count" do
+      within ".reservations-index-nav" do
         expect(page).to have_content "You have 3 reservations!"
       end
 

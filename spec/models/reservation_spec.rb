@@ -5,17 +5,27 @@ RSpec.describe Reservation, type: :model do
   let!(:table2) {create(:table, capacity: 4)}
   let(:reservation1) {create(:reservation, table_id: table1.id)}
   let!(:reservation2) {create(:reservation, start_time: DateTime.new(2024, 12, 24, 20, 0, 0),table_id: table1.id)}
+  let(:reservation3) {create(:reservation, party_count: 4, start_time: current_time_top_hour + 2.days,table_id: table2.id)}
   
 
   #Invalid instances
+  let(:current_time) {Time.zone.now}
+  let(:current_time_top_hour) {Time.zone.local(current_time.year, current_time.month, current_time.day, current_time.hour)}
   let(:invalid_reservation1) {build(:reservation, party_count: 9,table_id: table1.id)}
   let(:invalid_reservation2) {build(:reservation, party_count: 1, table_id: table1.id)}
   let(:invalid_reservation3) {build(:reservation, start_time: DateTime.new(2024, 8, 24, 20, 0, 0), table_id: table1.id)}
-  let(:invalid_reservation4) {build(:reservation, start_time: DateTime.yesterday, table_id: table1.id)}
+  let(:invalid_reservation4) {build(:reservation, start_time: current_time_top_hour - 1.hour, table_id: table1.id)}
   let(:invalid_reservation5) {build(:reservation, start_time: DateTime.new(2030, 8, 24, 20, 30), table_id: table1.id)}
   let(:invalid_reservation6) {build(:reservation, party_count: 6, table_id: table2.id)}
   let(:invalid_reservation7) {build(:reservation, start_time: DateTime.new(2024, 12, 24, 20, 0, 0), table_id: table1.id)}
-  let(:invalid_reservation8) {build(:reservation, start_time: DateTime.new(7654, 87, 67, 10, 0, 0), table_id: table1.id)}
+  let(:invalid_reservation8) {build(:reservation, party_count: 5, start_time: current_time_top_hour - 2.hour, table_id: table2.id)}
+  let(:invalid_reservation9) {build(:reservation, party_count: 5, start_time: current_time_top_hour + 2.days, table_id: table2.id)}
+  let(:invalid_reservation10) {build(:reservation, name: "#$%$", table_id: table1.id)}
+  let(:invalid_reservation11) {build(:reservation, name: "667754", table_id: table1.id)}
+  name = "Omac"
+  invalid_name_length = name * 100
+  let(:invalid_reservation12) {build(:reservation, name: invalid_name_length, table_id: table2.id)}
+  let(:invalid_reservation13) {build(:reservation, name: "T", table_id: table2.id)}
 
   describe 'validations' do
     it {should validate_presence_of(:name)}
@@ -24,6 +34,13 @@ RSpec.describe Reservation, type: :model do
     it {should validate_presence_of(:table_id)}
     it {should validate_numericality_of(:party_count)}
     it {should belong_to(:table)}
+    it { should validate_length_of(:name).is_at_most(100) }
+    it { should allow_value("Valid Name").for(:name) }
+    it { should allow_value("Ms. Jordyn Baylark-Rasul").for(:name) }
+    it { should allow_value(" Mr. Monopoly").for(:name) }
+    it { should_not allow_value("Invalid@Name!").for(:name) }
+    it { should_not allow_value("Odell4").for(:name) }
+    it { should_not allow_value("Odell4&100").for(:name) }
 
     it 'is valid if party count is in required range of 2 to 8' do
       expect(reservation1).to be_a Reservation
@@ -42,11 +59,11 @@ RSpec.describe Reservation, type: :model do
       expect(invalid_reservation6.errors[:party_count]).to include('is too big for the table capacity')
     end
 
-    it 'is invalid if start time` is less than an hour from current time' do
+    it 'is invalid if start time not in the future' do
       expect(invalid_reservation3).to be_invalid
-      expect(invalid_reservation3.errors[:start_time]).to include('must be at least an hour after the current time')
+      expect(invalid_reservation3.errors[:start_time]).to include('must be in the future')
       expect(invalid_reservation4).to be_invalid
-      expect(invalid_reservation4.errors[:start_time]).to include('must be at least an hour after the current time')
+      expect(invalid_reservation4.errors[:start_time]).to include('must be in the future')
     end
 
     it 'is invalid if start time is not at the top of the hour' do
@@ -58,6 +75,53 @@ RSpec.describe Reservation, type: :model do
       expect(invalid_reservation7).to be_invalid
       expect(invalid_reservation7.errors[:start_time]).to include('has already been reserved')
     end
+
+    it 'throws multiple errors when creating a reservation' do
+      expect(invalid_reservation8).to be_invalid
+      expect(invalid_reservation8.errors[:start_time]).to include('must be in the future')
+      expect(invalid_reservation8.errors[:party_count]).to include('is too big for the table capacity')
+
+      reservation = reservation3
+      expect(invalid_reservation9).to be_invalid
+      expect(invalid_reservation9.errors[:start_time]).to include('has already been reserved')
+      expect(invalid_reservation9.errors[:party_count]).to include('is too big for the table capacity')
+    end
+
+    describe 'validations when updating a reservation' do
+      it 'is valid if attrs are updated to valid inputs' do
+        reservation1.update(party_count: 4, table_id: table2.id, start_time: current_time_top_hour + 1.hour)
+        expect(reservation1).to be_valid
+      end
+
+      it 'throws errors if attrs are updated to invalid inputs' do
+        reservation1.update(party_count: 5, table_id: table2.id, start_time: current_time_top_hour + 1.hour)
+        expect(reservation1.errors[:party_count]).to include('is too big for the table capacity')
+        expect(reservation1.errors[:start_time]).to_not include('has already been reserved')
+        expect(reservation1.errors[:start_time]).to_not include('must be in the future')
+  
+        reservation2.update(party_count: 7, table_id: table2.id, start_time: current_time_top_hour)
+        expect(reservation2.errors[:start_time]).to include('must be in the future')
+        expect(reservation2.errors[:party_count]).to include('is too big for the table capacity')
+        expect(reservation1.errors[:start_time]).to_not include('has already been reserved')
+
+        reservation1.update(party_count: 5, table_id: table1.id, start_time: DateTime.new(2024, 12, 24, 20, 0, 0))
+        expect(reservation1.errors[:start_time]).to include('has already been reserved')
+        expect(reservation1.errors[:party_count]).to_not include('is too big for the table capacity')
+        expect(reservation1.errors[:start_time]).to_not include('must be in the future')
+
+      end
+
+      it 'cannot update a reservation where the start time has passed' do
+        reservation1.update(party_count: 7, table_id: table1.id, start_time: current_time_top_hour + 1.hour)
+        expect(reservation1).to be_valid
+
+        travel_to current_time_top_hour + 2.hours do
+          reservation1.update(party_count: 5, table_id: table1.id, start_time: current_time_top_hour + 5.hours)
+          expect(reservation1.errors[:base]).to include('Cannot update reservation as the original start time has passed.')
+        end
+      end
+    end
+    
   end
 
   describe '#self.descending' do
@@ -87,11 +151,17 @@ RSpec.describe Reservation, type: :model do
       resy_6 = create(:reservation, start_time: DateTime.new(2024, (next_month + 1) , 10, 17, 0, 0), table_id: table1.id)
       resy_7 = create(:reservation, start_time: DateTime.new(2024, (next_month + 2) , 12, 1, 0, 0), table_id: table1.id)
       resy_8 = create(:reservation, start_time: DateTime.new(2024, (next_month + 2) , 14, 6, 0, 0), table_id: table1.id)
+      resy_9 = create(:reservation, start_time: current_time_top_hour + 2.hours, table_id: table1.id)
       expect(Reservation.upcoming_reservations.count).to eq 5
-      expect(Reservation.upcoming_reservations).to eq [resy_1, resy_2, resy_3, resy_4, resy_5]
-      expect(Reservation.upcoming_reservations).to_not eq [resy_1, resy_2, resy_3, resy_4, resy_5, resy_6]
+      expect(Reservation.upcoming_reservations).to eq [resy_9, resy_1, resy_2, resy_3, resy_4]
+      expect(Reservation.upcoming_reservations).to_not eq [resy_1, resy_2, resy_3, resy_4, resy_9]
       added_resy = create(:reservation, start_time: DateTime.new(2024, next_month, 3, 7, 0, 0), table_id: table1.id)
-      expect(Reservation.upcoming_reservations).to eq [resy_1, resy_2, added_resy, resy_3, resy_4]
+      expect(Reservation.upcoming_reservations).to eq [resy_9, resy_1, resy_2, added_resy, resy_3]
+
+      travel_to current_time_top_hour + 3.hours do
+        expect(Reservation.upcoming_reservations).to eq [resy_1, resy_2, added_resy, resy_3, resy_4]
+        expect(Reservation.upcoming_reservations).to_not eq [resy_9, resy_1, resy_2, added_resy, resy_3]
+      end
     end
   end
 

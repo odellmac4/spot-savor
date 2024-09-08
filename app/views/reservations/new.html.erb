@@ -2,6 +2,7 @@
   <%= render partial: 'form', locals: {
     model: @reservation, 
     tables: @tables,
-    submit_button_text: 'Create Reservation' 
+    submit_button_text: 'Create Reservation',
+    cancel_path: reservations_path 
   } %>
 </section>
