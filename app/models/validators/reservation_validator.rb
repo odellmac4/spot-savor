@@ -1,6 +1,7 @@
 module Validators
   module ReservationValidator
-    def check_if_start_time_passed
+
+    def start_time_passed
       if start_time_was.present? && start_time_was <= Time.zone.now
         errors.add(:base, 'Cannot update reservation as the original start time has passed.')
         throw :abort
