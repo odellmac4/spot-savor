@@ -1,0 +1,49 @@
+
+<div class="container-fluid sticky-top">
+  <div class="row align-items-center">
+    
+    <!-- Sticky Column -->
+    <div class="col-md-12 bg-light border-bottom">
+        <div class="row align-items-center py-2">
+        
+        <!-- Content Column -->
+        <div class="col-md-8 d-flex align-items-center mb-3 mt-1">
+          <% if nav_bar_content_class %>
+            <h1 class="<%= nav_bar_content_class %>">
+              <%= nav_bar_content %>
+            </h1>
+          <% else %>
+            <h1>
+              <%= nav_bar_content %>
+            </h1>
+          <% end %>
+
+          <% if nav_bar_insights %>
+        
+            <h1 class="d-sm-inline align-middle spot-savor-title fs-3"><strong>SpotSavor </strong></h1>
+            <h1 class="d-sm-inline align-middle insights-text fs-3 mx-2">Insights</h1>
+            <span class="material-icons insights-icon align-middle fs-1">query_stats</span>
+          
+          <% end %>
+        </div>
+        
+        <!-- Button Column -->
+        <div class="col-md-4 d-flex justify-content-end mb-3">
+          <% if create_resy_button %>
+            <div class="me-2">
+              <%= link_to "Create Reservation", new_reservation_path, class: 'btn btn-outline-primary' %>
+            </div>
+          <% end %>
+
+          <% if resy_index_button %>
+            <div>
+              <%= link_to "See All Reservations", reservations_path, class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+</div>
