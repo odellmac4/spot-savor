@@ -1,8 +1,15 @@
 module Validators
   module ReservationValidator
-    def start_time_date
-      if start_time.present? && start_time <= (Time.zone.now + 1.hour)
-        errors.add(:start_time, 'must be at least an hour after the current time')
+    def check_if_start_time_passed
+      if start_time_was.present? && start_time_was <= Time.zone.now
+        errors.add(:base, 'Cannot update reservation as the original start time has passed.')
+        throw :abort
+      end
+    end
+    
+    def start_time_must_be_in_the_future
+      if start_time.present? && start_time <= Time.zone.now
+        errors.add(:start_time, 'must be in the future')
       end
     end
   
