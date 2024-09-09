@@ -61,7 +61,7 @@ Start the server with:
 `rails server`
 ### Testing
 1. Run RSpec Tests 🏃‍♂️ Execute the RSpec tests with the following command: `bundle exec rspec`
-  - **PLEASE NOTE: After running the test suite run command `rails db:seed` again**
+  - **PLEASE NOTE: After running the test suite run command `rails db:seed` before starting the server back up**
 2. Check Test Coverage 📊 We use SimpleCov to measure test coverage. After running the tests, SimpleCov will generate a coverage report, typically located in the coverage directory. Open coverage/index.html in your browser to view the detailed coverage report.
 3. Verify Test Results ✅ You should see a total of **59** passing tests. Ensure that all tests pass to confirm that the application is functioning as expected.
 4. Note on Dashboard Tests ⚠️ Please be aware that tests for the dashboard are still in progress, as they were part of a stretch goal. Some functionalities related to the dashboard may not yet be fully tested.
