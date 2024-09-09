@@ -22,7 +22,7 @@ RSpec.describe 'Reservations index' do
       within ".reservations-index-nav" do
         expect(page).to have_content "You have 6 reservations!"
       end
-
+      
       resy_7 = create(:reservation, party_count: 3, table_id: table.id)
       visit reservations_path
 
