@@ -1,5 +1,4 @@
-require 'factory_bot_rails'
-include FactoryBot::Syntax::Methods
+
 
 # This file should ensure the existence of records required to run the application in every environment (production,
 # development, test). The code here should be idempotent so that it can be executed at any point in every environment.
@@ -10,12 +9,25 @@ include FactoryBot::Syntax::Methods
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-table1 = create(:table, capacity: 8)
-tables = create_list(:table, 9)
-res1 =  create(:reservation, table_id: table1.id)
-res2 =  create(:reservation, table_id: table1.id)
-res3 =  create(:reservation, table_id: table1.id)
-res4 =  create(:reservation, start_time: DateTime.new(2024, 12, 24, 10, 0, 0), table_id: table1.id)
-res5 =  create(:reservation, start_time: DateTime.new(2024, 12, 24, 20, 0, 0), table_id: table1.id)
+
+table_1 = Table.create(capacity: 8)
+table_2 = Table.create(capacity: 7)
+table_3 = Table.create(capacity: 6)
+table_4 = Table.create(capacity: 5)
+table_5 = Table.create(capacity: 5)
+table_6 = Table.create(capacity: 4)
+table_7 = Table.create(capacity: 3)
+table_8 = Table.create(capacity: 2)
+table_9 = Table.create(capacity: 8)
+table_10 = Table.create(capacity: 4)
+
+current_time = Time.zone.now
+current_time_top_hour = Time.zone.local(current_time.year, current_time.month, current_time.day, current_time.hour)
+
+reservation_1 = Reservation.create(name: "Jermaine Cole", party_count: 5, start_time: current_time_top_hour + 2000.hours, table_id: table_3.id )
+reservation_2 = Reservation.create(name: "Jazmine Sullivan", party_count: 6, start_time: current_time_top_hour + 3000.hours, table_id: table_9.id )
+reservation_3 = Reservation.create(name: "Brandy Norwood", party_count: 3, start_time: current_time_top_hour + 200.hours, table_id: table_7.id )
+reservation_4 = Reservation.create(name: "Kehlani", party_count: 4, start_time: current_time_top_hour + 5007.hours, table_id: table_10.id )
+reservation_5 = Reservation.create(name: "Erica Badu", party_count: 2, start_time: current_time_top_hour + 9453.hours, table_id: table_8.id )
 
 
